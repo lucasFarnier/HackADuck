@@ -1,0 +1,82 @@
+@import url('https://fonts.googleapis.com/css2?family=Amatic+SC:wght@400;700&display=swap');
+a {
+    text-decoration: none; /* Removes the underline */
+    color: blue;          /* Optional: set link color */
+}
+
+a:hover {
+    text-decoration: underline; /* Optional: add underline on hover */
+}
+
+.amatic-sc-regular {
+    font-family: "Amatic SC", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+  
+.amatic-sc-bold {
+    font-family: "Amatic SC", sans-serif;
+    font-weight: 700;
+    font-style: normal;
+}
+#join{
+    size:20px;
+    background-color: red;
+    padding: 25px;
+    display:block;
+    border: 2;
+    font-family: "Amatic SC", sans-serif;
+    font-size:20px;
+    margin:auto;
+    text-decoration: none;
+    border-color: white;
+    
+}
+
+.title {
+    font-family: "Amatic SC", sans-serif;
+    text-align: center;
+}
+
+.Code_lbl {
+    font-family: "Amatic SC", sans-serif;
+    text-align: center;
+}
+
+.Code_ph {
+    font-family: "Amatic SC", sans-serif;
+    text-align: center;
+}
+
+.Username_lbl {
+    font-family: "Amatic SC", sans-serif;
+    text-align: center;
+}
+
+.Username_ph {
+    font-family: "Amatic SC", sans-serif;
+    text-align: center;
+}
+
+.lobby {
+    font-family: "Amatic SC", sans-serif;
+    margin: auto;
+    height: 500px;
+    width: 600px;
+    background-color: grey;
+}
+
+.lobby_lbl {
+    font-family: "Amatic SC", sans-serif;
+    padding-top: 14px;
+    padding-left: 20px;
+    text-align: left;
+}
+
+.player_lst {
+    font-family: "Amatic SC", sans-serif;
+    font-size: xx-large;
+    padding-top: 14px;
+    padding-left: 20px;
+    text-align: left;
+}
