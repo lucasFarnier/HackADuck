@@ -1,4 +1,5 @@
 import sqlite3
+
 class DB:
     def __init__(self, fileName):
         self.__fileName = fileName
@@ -56,3 +57,14 @@ class DB:
         except sqlite3.Error as e:
             print(f"Database error: {e}")
             return None
+
+    def create_table(self, create_table_sql):
+        """Creates a new table in the database."""
+        try:
+            with self._connectDB() as connection:
+                cursor = connection.cursor()
+                cursor.execute(create_table_sql)
+                connection.commit()
+                print("Table created successfully")
+        except sqlite3.Error as e:
+            print(f"Error creating table: {e}")
