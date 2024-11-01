@@ -1,0 +1,24 @@
+* {
+    box-sizing: border-box;
+}
+
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.whiteboard {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+
+    border: blue dotted 2px;
+    margin-left: auto;
+    margin-right: auto; 
+
+    width: 400px;
+    height: 400px;
+}
