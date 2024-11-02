@@ -9,16 +9,13 @@
         <h2>Sketch Storm</h2>
         <div>
             <div class="menu">
-                <form class="Code_lbl">
-                    <label for="Code">Code:</label><br>
-                    <p>Placeholder<p>
-                    <label for="Name">Name:</label><br>
-                    <input type="text" id="Username" name="Username" size="50" maxlength="20"><br>
-                </form>
+                    <label>Name:</label><br>
+                    <input type="text" id="Username" name="Username" size="50" maxlength="20" placeholder="name"><br>
+                    <label>Code:</label><br>
+                    <input type="text" id="Code" name="Code" size="50" maxlength="20" placeholder="lobby code"><br>
+
                 <div>
-                    <a href="Lobby.html">
-                        <button id = "join2">Join</button>
-                    </a>
+                    <button onclick="handleJoinGame()">Join</button>
                 </div>
             </div>
         </div>
