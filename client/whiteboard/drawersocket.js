@@ -56,11 +56,12 @@ const canvas = document.getElementById('whiteboard');
         let lastX, lastY; // Store last position
 
         // Start drawing
+       // Start drawing
         canvas.addEventListener("mousedown", (e) => {
             if (!drawingAllowed) return; // Prevent drawing if not allowed
             drawing = true;
-            ctx.beginPath();
-            ctx.moveTo(e.offsetX, e.offsetY);
+            lastX = e.offsetX;
+            lastY = e.offsetY;
             socket.emit('draw', { x: e.offsetX, y: e.offsetY, isDown: true, color: ctx.strokeStyle });
         });
 
@@ -69,7 +70,7 @@ const canvas = document.getElementById('whiteboard');
             if (!drawing || !drawingAllowed) return; // Prevent drawing if not allowed
             ctx.lineTo(e.offsetX, e.offsetY);
             ctx.stroke();
-            socket.emit('draw', { x: e.offsetX, y: e.offsetY, isDown: true, color: ctx.strokeStyle });
+            socket.emit('draw', { x: e.offsetX, y: e.offsetY, isDown: false, color: ctx.strokeStyle });
 
             // Update last position
             lastX = e.offsetX;
@@ -79,6 +80,7 @@ const canvas = document.getElementById('whiteboard');
         // Stop drawing
         canvas.addEventListener("mouseup", () => {
             drawing = false;
+            socket.emit('draw', { x: lastX, y: lastY, isDown: false, color: ctx.strokeStyle, endLine: true });
             ctx.closePath();
         });
 
@@ -90,11 +92,21 @@ const canvas = document.getElementById('whiteboard');
         // Listen for drawing events from other users
         socket.on('draw', (data) => {
             ctx.strokeStyle = data.color; // Set color based on data received
-            ctx.beginPath(); // Start a new path
-            ctx.moveTo(data.x, data.y); // Move to the last position (or you might want to store last position)
-            ctx.lineTo(data.x, data.y); // Draw a line to the received point
-            ctx.stroke();
+            if (data.isDown) {
+                // Begin a new path when the drawing starts
+                ctx.beginPath();
+                ctx.moveTo(data.x, data.y);
+            } else {
+                // Continue the path
+                ctx.lineTo(data.x, data.y);
+                ctx.stroke();
+            }
+            if (data.endLine) {
+                // End the path when the drawing stops
+                ctx.closePath();
+            }
         });
+
         
         // Listen for color changes from other users
         socket.on('changeColor', (color) => {

@@ -38,16 +38,26 @@ const canvas = document.getElementById('whiteboard');
         const timerInterval = setInterval(updateTimer, 1000);
 
         
+         // Listen for drawing events from other users
+         socket.on('draw', (data) => {
+            ctx.strokeStyle = data.color; // Set color based on data received
+            if (data.isDown) {
+                // Begin a new path when the drawing starts
+                ctx.beginPath();
+                ctx.moveTo(data.x, data.y);
+            } else {
+                // Continue the path
+                ctx.lineTo(data.x, data.y);
+                ctx.stroke();
+            }
+            if (data.endLine) {
+                // End the path when the drawing stops
+                ctx.closePath();
+            }
+        });
+
+        
         // Listen for color changes from other users
         socket.on('changeColor', (color) => {
-            ctx.strokeStyle = color; // Set color based on the received color
-            });
-            
-        // Listen for drawing events from other users
-        socket.on('draw', (data) => {
-            ctx.strokeStyle = data.color; // Set color based on data received
-            ctx.beginPath(); // Start a new path
-            ctx.moveTo(data.startX, data.startY); // Move to the start position
-            ctx.lineTo(data.endX, data.endY); // Draw line to the end position
-            ctx.stroke();
+        ctx.strokeStyle = color; // Set color based on the received color
         });
