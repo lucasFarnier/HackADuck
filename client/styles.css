@@ -69,9 +69,8 @@ button {
     font-size: 45px;
     box-shadow: #000000 0px 0px 5px;
 }
-button:hover:not(.voteOpp) {
+button:hover:not(.voteOpp, .subbut, .exitbut) {
     background-color: #fdff8b;
-    width: 50%;
     border-radius: 25px;
     margin-left: auto;
     margin-right: auto;
@@ -95,7 +94,6 @@ button:hover:not(.voteOpp) {
     margin-top: 20px;
     text-decoration: none;
     border-color: grey;
-    
 }
 
 h1 {
@@ -256,4 +254,78 @@ label {
     font-weight: 600;
     /* font-size: 20px; */
     box-shadow: #6a6a6a 0px 0px 8px;
+}
+
+
+.guessInput{
+    width: 50%;
+    height: 50px;
+    border-radius: 15px;
+
+    font-size: xx-large;
+    text-align: center;
+    
+}
+.subbut{
+    width: 25%;
+    height: 50px;
+    border-radius: 15px;
+
+    font-size: x-large;
+    font-weight: bold;
+    text-align: center;
+
+    margin-left: 37.5%;
+    margin-bottom: 15px;
+    padding: 1%;
+    padding-bottom: 3%;
+
+    background-color: rgb(159, 214, 178);
+    border:black 3px solid;
+}
+.subbut:hover{
+    border: rgb(0, 255, 76) 3px solid;
+    width: 25%;
+    height: 50px;
+    border-radius: 15px;
+}
+
+.joinCreate{
+    width: 25%;
+    height: 50px;
+    border-radius: 15px;
+
+    font-size: 300%;
+    font-weight: bold;
+    text-align: center;
+
+    margin-left: 37.5%;
+    margin-bottom: 15px;
+    padding: 1%;
+    padding-bottom: 4%;
+
+    border:black 3px solid;
+}
+
+.exitbut{
+    width: 10%;
+    height: auto;
+    border-radius: 15px;
+
+    font-size: 300%;
+    font-weight: bold;
+    text-align: center;
+
+    margin-left: 45%;
+    margin-bottom: 15px;
+    padding: 1%;
+
+    background-color: rgb(214, 159, 159);
+    border:black 3px solid;
+}
+.exitbut:hover{
+    border: rgb(255, 0, 0) 3px solid;
+    height: auto;
+    border-radius: 15px;
+    margin-left: 45%;
 }
