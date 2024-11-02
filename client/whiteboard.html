@@ -7,17 +7,31 @@
 </head>
 <body>
 
-    <h2>Prompt holder:</h2>
+    <h2 id="timer">Prompt holder:</h2>
+    <div id="popup" class="popup">
+        <div class="popup-content">
+            <!-- <span class="close">&times;</span> -->
+            <h2>Vote a theme</h2>
+            <h3>
+                <button style="width:fit-content" onclick="closePopup(`random`)">Random</button>
+                <button style="width:fit-content" onclick="closePopup(`halloween`)">Halloween</button>
+                <button style="width:fit-content" onclick="closePopup(`christmas`)">Christmas</button>
+                <button style="width:fit-content" onclick="closePopup(`easter`)">Easter</button>
+
+            </h3>                
+        </div>
+    </div>
     <div class="menu">
-    <!-- Background music -->
-    <audio id="LobbydMusic" src="media/lobby.mp3" autoplay loop></audio>
-        <div class="lobby_lbl">
+        <!-- Background music -->
+        <audio id="LobbydMusic" src="media/lobby.mp3" autoplay loop></audio>
+        <div class="lobby_lbl" style="width: 700px; height: 500px;">
             <div id="drawing" class="whiteboard-container">
                 <canvas id="whiteboard" width="700" height="500"></canvas>
             </div>
             <button type="button" id="colour1" class="colorBut">colour 1</button>
             <button type="button" id="colour2" class="colorBut">colour 2</button>
         </div>
+        
     </div>
    
     
@@ -25,5 +39,22 @@
     <script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
     
     <script src='drawersocket.js'></script>
+    <script>
+        document.getElementById("popup").style.display = "flex"; // Show the popup
+
+
+        function closePopup(option) {
+            
+            document.getElementById("popup").style.display = "none"; // Hide the popup
+        };
+
+        // Close the popup if the user clicks anywhere outside of the popup content
+        window.onclick = function(event) {
+            if (event.target == document.getElementById("popup")) {
+                document.getElementById("popup").style.display = "none";
+            }
+        };
+
+    </script>
 </body>
 </html>

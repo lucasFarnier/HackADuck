@@ -16,8 +16,8 @@ const canvas = document.getElementById('whiteboard');
             let futureTimestamp = localStorage.getItem('futureTimestamp');
 
             // If it doesn't exist, create it and store it in localStorage
-            if (!futureTimestamp) {
-                futureTimestamp = unixTimestamp + 60;
+            if (!futureTimestamp || futureTimestamp <= now) {
+                futureTimestamp = unixTimestamp + 180;
                 localStorage.setItem('futureTimestamp', futureTimestamp);
             }
 
