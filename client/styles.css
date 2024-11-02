@@ -4,8 +4,6 @@ body {
     background-color: #3e6795;
 }
 
-
-
 .menu {
     width: 50%;
     margin-left: auto;
@@ -73,7 +71,7 @@ button:hover {
     display: block;
     font-family: "Amatic SC", sans-serif;
     font-weight: 600;
-    font-size: 45px;
+    /* font-size: 20px; */
     box-shadow: #6a6a6a 0px 0px 8px;
 }
 
@@ -85,8 +83,8 @@ button:hover {
     border: 2;
     font-family: "Amatic SC", sans-serif;
     font-size:20px;
-    margin-left: 24px;
-    margin-top: 24px;
+    margin-left: auto;
+    margin-top: 20px;
     text-decoration: none;
     border-color: grey;
     
@@ -98,13 +96,11 @@ h1 {
     font-weight: 700;
     font-size: 100px;
 }
-
-.Lobby_ttl {
-    margin-top: auto;
-    margin-left: 45%;
+h2{
+    text-align: center;
     font-family: "Amatic SC", sans-serif;
     font-weight: 700;
-    font-size: 100px;
+    font-size: 60px;
 }
 
 .Code_lbl {
@@ -139,8 +135,7 @@ h1 {
 
 .lobby_lbl {
     font-family: "Amatic SC", sans-serif;
-    font-size: xx-large;
-    padding-top: 14px;
+    font-size: x-large;
     text-align: center;
     
 }
@@ -180,4 +175,10 @@ h1 {
 label {
     font-weight: 1000;
     font-family: "Amatic SC", sans-serif;
+    font-size: 45px;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+
 }
