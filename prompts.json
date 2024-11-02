@@ -1,0 +1,44 @@
+{
+    "prompts": [
+        {
+            "main": "Draw a spooky haunted house",
+            "secondary": ["ghost", "pumpkin", "bat"]
+        },
+        {
+            "main": "Illustrate a magical forest",
+            "secondary": ["fairy", "unicorn", "tree"]
+        },
+        {
+            "main": "Depict a snowy winter scene",
+            "secondary": ["snowman", "pine tree", "sled"]
+        },
+        {
+            "main": "Create a cozy Christmas living room",
+            "secondary": ["fireplace", "stockings", "Christmas tree"]
+        },
+        {
+            "main": "Design an Easter egg hunt scene",
+            "secondary": ["eggs", "bunny", "basket"]
+        },
+        {
+            "main": "Paint a haunted pumpkin patch",
+            "secondary": ["pumpkins", "scarecrow", "moon"]
+        },
+        {
+            "main": "Draw a spring meadow with flowers",
+            "secondary": ["tulips", "butterflies", "sunshine"]
+        },
+        {
+            "main": "Illustrate a winter village at night",
+            "secondary": ["snow-covered roofs", "lanterns", "stars"]
+        },
+        {
+            "main": "Depict a festive holiday dinner table",
+            "secondary": ["turkey", "candles", "decorations"]
+        },
+        {
+            "main": "Create a whimsical Easter bunny village",
+            "secondary": ["cottages", "carrots", "bunny family"]
+        }
+    ]
+}
