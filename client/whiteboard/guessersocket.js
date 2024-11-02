@@ -37,17 +37,17 @@ const canvas = document.getElementById('whiteboard');
         // Update the timer every second
         const timerInterval = setInterval(updateTimer, 1000);
 
-
+        
+        // Listen for color changes from other users
+        socket.on('changeColor', (color) => {
+            ctx.strokeStyle = color; // Set color based on the received color
+            });
+            
         // Listen for drawing events from other users
         socket.on('draw', (data) => {
             ctx.strokeStyle = data.color; // Set color based on data received
             ctx.beginPath(); // Start a new path
-            ctx.moveTo(data.x, data.y); // Move to the last position (or you might want to store last position)
-            ctx.lineTo(data.x, data.y); // Draw a line to the received point
+            ctx.moveTo(data.startX, data.startY); // Move to the start position
+            ctx.lineTo(data.endX, data.endY); // Draw line to the end position
             ctx.stroke();
-        });
-        
-        // Listen for color changes from other users
-        socket.on('changeColor', (color) => {
-        ctx.strokeStyle = color; // Set color based on the received color
         });

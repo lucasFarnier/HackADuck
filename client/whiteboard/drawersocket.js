@@ -59,7 +59,7 @@ const canvas = document.getElementById('whiteboard');
             drawing = true;
             ctx.beginPath();
             ctx.moveTo(e.offsetX, e.offsetY);
-            socket.emit('draw', { x: e.offsetX, y: e.offsetY, isDown: true, color: ctx.strokeStyle });
+            socket.emit('draw', { startX: e.offsetX, startY: e.offsetY, endX: e.offsetX, endY: e.offsetY, isDown: true, color: ctx.strokeStyle });
         });
 
         // Draw lines
@@ -67,7 +67,7 @@ const canvas = document.getElementById('whiteboard');
             if (!drawing || !drawingAllowed) return; // Prevent drawing if not allowed
             ctx.lineTo(e.offsetX, e.offsetY);
             ctx.stroke();
-            socket.emit('draw', { x: e.offsetX, y: e.offsetY, isDown: true, color: ctx.strokeStyle });
+            socket.emit('draw', { startX: e.offsetX, startY: e.offsetY, endX: e.offsetX, endY: e.offsetY, isDown: true, color: ctx.strokeStyle });
         });
 
         // Stop drawing
@@ -85,8 +85,8 @@ const canvas = document.getElementById('whiteboard');
         socket.on('draw', (data) => {
             ctx.strokeStyle = data.color; // Set color based on data received
             ctx.beginPath(); // Start a new path
-            ctx.moveTo(data.x, data.y); // Move to the last position (or you might want to store last position)
-            ctx.lineTo(data.x, data.y); // Draw a line to the received point
+            ctx.moveTo(data.startX, data.startY); // Move to the start position
+            ctx.lineTo(data.endX, data.endY); // Draw line to the end position
             ctx.stroke();
         });
         
