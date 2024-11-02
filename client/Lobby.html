@@ -12,14 +12,14 @@
     <!-- Background music -->
     <audio id="LobbydMusic" src="media/lobby.mp3" autoplay loop></audio>
         <div class="lobby_lbl">
-            <h2 id="getID"></h2>
+            <h2 id="getIDNum"></h2>
             <h2>Players:</h2>
         </div>
         <div id="gameStatus">Waiting for players...</div> <!-- Status text -->
         <div class="player_lst" id="playerList">
         </div>
         <button id="readyButton" onclick="readyUp()">Ready Up</button> <!-- Ready button -->
-        <button id="openPopup" class="HTP">How to Play</button>
+        <button id="openPopup" class="HTP" style="font-size: 45px; padding: 1px;">How to Play</button>
         <div id="popup" class="popup">
             <div class="popup-content">
                 <span class="close">&times;</span>
@@ -42,6 +42,7 @@
 
         // Assuming you have the gameID from the URL or local storage
         const currentGameID = new URLSearchParams(window.location.search).get('gameID');
+        document.getElementById("getIDNum").innerText = "ID:\n" + currentGameID;
 
         socket.emit('join', { gameID: currentGameID });  // Notify server that user has joined
 
@@ -79,7 +80,6 @@
             });
 
             document.getElementById("readyButton").style.display = "none"; 
-            document.getElementById('getID') = "ID:" + currentGameID;
         }
     </script>
 </body>
