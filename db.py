@@ -24,14 +24,31 @@ class DB:
     def insert(self, query, args):
         if args is None:
             print("Args can not be type None")
-            return
+            return False
         try:
             with self._connectDB() as connection:
                 cursor = connection.cursor()
                 cursor.execute(query, args)
                 connection.commit()
+                return True
         except sqlite3.Error as e:
             print(f"Database error: {e}")
+            return False
+
+    def insertAndFetch(self, query, args=None):
+        if args is None:
+            print("Args can not be type None")
+            return None
+        try:
+            with self._connectDB() as connection:
+                cursor = connection.cursor()
+                cursor.execute(query, args)
+                connection.commit()
+                cursor.execute("SELECT last_insert_rowid()")
+                return cursor.fetchone()[0]
+        except sqlite3.Error as e:
+            print(f"Database error: {e}")
+            return None
 
     def delete(self, query, args):
         try:
