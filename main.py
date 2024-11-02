@@ -87,5 +87,28 @@ def joinGame():
 
     return {"gameID": gameID, "playerID": playerID, "username": username}, 200
 
+@app.route("/readyup", methods=["POST"])
+def readyUp():
+    playerID = request.json.get("playerID")
+    gameID = request.json.get("gameID")
+
+    if not playerID or not gameID:
+        return {"error": "playerID and gameID are required"}, 400
+
+    readyQuery = "UPDATE Player SET is_ready = ? WHERE player_id = ? and game_id = ?"
+    if db.update(readyQuery, (True, playerID, gameID)) == 0:
+        return {"error": "Failed to update ready status or player not found"}, 404
+    
+    checkReadyQuery = "SELECT COUNT(*) FROM PLAYER WHERE game_id = ? and is_ready = FALSE"
+    unreadyCount = db.select(checkReadyQuery, (gameID,))
+    
+    if unreadyCount and unreadyCount[0][0] == 0:
+        print("Start game!")
+        return {"message": "All players are ready. Game started!"}, 200
+    return {"message": "Player is ready. Waiting for others."}, 200
+
+
+
+
 if __name__ == "__main__":
     socketio.run(app,port=PORT)
