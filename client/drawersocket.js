@@ -101,7 +101,7 @@ const canvas = document.getElementById('whiteboard');
         });
 
         // Listen for drawing events from other users
-        socket.on('drawing', (data) => {
+        socket.on('draw', (data) => {
             // Set the color for each line segment individually
             ctx.strokeStyle = data.color;
             if (data.isDown) {

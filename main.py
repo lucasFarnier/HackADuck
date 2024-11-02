@@ -11,7 +11,7 @@ db = DB("game_database.db")
 
 # Handles drawing =======================================
 socketio = SocketIO(app, cors_allowed_origins="*")
-@socketio.on('drawing')
+@socketio.on('draw')
 def handle_draw(data):
     emit('draw', data, broadcast=True)
 
