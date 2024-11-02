@@ -1,5 +1,5 @@
 from flask import Flask, render_template
-from flask_socketio import SocketIO
+from flask_socketio import SocketIO, emit
 
 app = Flask(__name__)
 socketio = SocketIO(app, cors_allowed_origins="*")
@@ -14,11 +14,11 @@ def handlConnection():
 
 @socketio.on('draw')
 def handle_draw(data):
-    socketio.emit('draw', data, broadcast=True)
+    emit('draw', data, broadcast=True)
 
 @socketio.on('stopDrawing')
 def handle_stop_drawing():
-    socketio.emit('stopDrawing')
+    emit('stopDrawing')
 
 if __name__ == '__main__':
     socketio.run(app, debug=True, port=60000)
