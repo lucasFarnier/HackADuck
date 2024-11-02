@@ -26,8 +26,9 @@ input[type=text] {
     margin: 8px 0;
     box-sizing: border-box;
     font-family: "Amatic SC", sans-serif;
-    font-weight: 400;
+    font-weight: 600;
     font-size: xx-large;
+    text-align: center;
 }
 
 #join{
@@ -83,7 +84,14 @@ input[type=text] {
     font-family: "Amatic SC", sans-serif;
     font-weight: 700;
     font-size: 100px;
-    text-align: center;
+}
+
+.Lobby_ttl {
+    margin-top: auto;
+    margin-left: 45%;
+    font-family: "Amatic SC", sans-serif;
+    font-weight: 700;
+    font-size: 100px;
 }
 
 .Code_lbl {
@@ -118,17 +126,16 @@ input[type=text] {
 
 .lobby_lbl {
     font-family: "Amatic SC", sans-serif;
+    font-size: xx-large;
     padding-top: 14px;
-    padding-left: 20px;
-    text-align: left;
+    text-align: center;
+    
 }
 
 .player_lst {
     font-family: "Amatic SC", sans-serif;
     font-size: xx-large;
-    padding-top: 14px;
-    padding-left: 20px;
-    text-align: left;
+    text-align: center;
 }
 
 .popup {
