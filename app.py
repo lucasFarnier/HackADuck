@@ -12,5 +12,9 @@ def index():
 def handle_draw(data):
     socketio.emit('draw', data)
 
+@socketio.on('stopDrawing')
+def handle_stop_drawing():
+    socketio.emit('stopDrawing')
+
 if __name__ == '__main__':
     socketio.run(app, debug=True)
