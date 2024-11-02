@@ -160,10 +160,14 @@ h2{
 }
 
 .popup-content {
-    background-color: white;
-    padding: 20px;
-    border-radius: 5px;
-    text-align: center;
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: #6baaf2;
+    border: #000000 solid 2px;
+    border-radius: 25px;
+    padding: 10px;
+    box-shadow: #000000 0px 0px 5px;
 }
 
 .close {
