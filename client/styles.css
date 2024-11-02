@@ -61,9 +61,8 @@ button {
     font-size: 45px;
     box-shadow: #000000 0px 0px 5px;
 }
-button:hover:not(.voteOpp, .subbut) {
+button:hover:not(.voteOpp, .subbut, .exitbut) {
     background-color: #fdff8b;
-    width: 50%;
     border-radius: 25px;
     margin-left: auto;
     margin-right: auto;
@@ -277,4 +276,44 @@ label {
     width: 25%;
     height: 50px;
     border-radius: 15px;
+}
+
+.joinCreate{
+    width: 25%;
+    height: 50px;
+    border-radius: 15px;
+
+    font-size: 300%;
+    font-weight: bold;
+    text-align: center;
+
+    margin-left: 37.5%;
+    margin-bottom: 15px;
+    padding: 1%;
+    padding-bottom: 4%;
+
+    border:black 3px solid;
+}
+
+.exitbut{
+    width: 10%;
+    height: auto;
+    border-radius: 15px;
+
+    font-size: 300%;
+    font-weight: bold;
+    text-align: center;
+
+    margin-left: 45%;
+    margin-bottom: 15px;
+    padding: 1%;
+
+    background-color: rgb(214, 159, 159);
+    border:black 3px solid;
+}
+.exitbut:hover{
+    border: rgb(255, 0, 0) 3px solid;
+    height: auto;
+    border-radius: 15px;
+    margin-left: 45%;
 }
