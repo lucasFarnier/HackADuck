@@ -19,18 +19,48 @@ a:hover {
     font-weight: 700;
     font-style: normal;
 }
+
+input[type=text] {
+    width: 50%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    box-sizing: border-box;
+    font-family: "Amatic SC", sans-serif;
+    font-weight: 600;
+    font-size: xx-large;
+    text-align: center;
+}
+
 #join{
     size:20px;
     background-color: red;
-    padding: 25px;
+    padding: 50px 100px;
     display:block;
     border: 2;
     font-family: "Amatic SC", sans-serif;
-    font-size:20px;
-    margin:auto;
+    font-weight: 600;
+    font-size:50px;
+    margin: auto;
+    margin-top: 150px;
     text-decoration: none;
     border-color: white;
-    
+    border-radius: 25px;
+}
+
+#join2{
+    size:20px;
+    background-color: red;
+    padding: 50px 100px;
+    display:block;
+    border: 2;
+    font-family: "Amatic SC", sans-serif;
+    font-weight: 600;
+    font-size:50px;
+    margin: auto;
+    margin-top: 50px;
+    text-decoration: none;
+    border-color: white;
+    border-radius: 25px;
 }
 
 .HTP{
@@ -49,13 +79,25 @@ a:hover {
 }
 
 .title {
+    margin-top: auto;
+    margin-left: 40%;
     font-family: "Amatic SC", sans-serif;
-    text-align: center;
+    font-weight: 700;
+    font-size: 100px;
+}
+
+.Lobby_ttl {
+    margin-top: auto;
+    margin-left: 45%;
+    font-family: "Amatic SC", sans-serif;
+    font-weight: 700;
+    font-size: 100px;
 }
 
 .Code_lbl {
     font-family: "Amatic SC", sans-serif;
     text-align: center;
+    font-size: 40px;
 }
 
 .Code_ph {
@@ -79,21 +121,22 @@ a:hover {
     height: 500px;
     width: 600px;
     background-color: grey;
+    border-radius: 25px;
 }
 
 .lobby_lbl {
     font-family: "Amatic SC", sans-serif;
+    font-size: xx-large;
     padding-top: 14px;
-    padding-left: 20px;
-    text-align: left;
+    text-align: center;
+    
 }
 
 .player_lst {
     font-family: "Amatic SC", sans-serif;
     font-size: xx-large;
     padding-top: 14px;
-    padding-left: 20px;
-    text-align: left;
+    text-align: center;
 }
 
 .popup {
