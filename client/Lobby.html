@@ -12,6 +12,7 @@
     <!-- Background music -->
     <audio id="LobbydMusic" src="media/lobby.mp3" autoplay loop></audio>
         <div class="lobby_lbl">
+            <h2 id="getID"></h2>
             <h2>Players:</h2>
         </div>
         <div id="gameStatus">Waiting for players...</div> <!-- Status text -->
@@ -78,6 +79,7 @@
             });
 
             document.getElementById("readyButton").style.display = "none"; 
+            document.getElementById('getID') = "ID:" + currentGameID;
         }
     </script>
 </body>
