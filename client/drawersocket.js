@@ -98,7 +98,6 @@ const canvas = document.getElementById('whiteboard');
 
         // Listen for drawing events from other users
         socket.on('draw', (data) => {
-            let currentColor = ctx.strokeStyle;
             ctx.strokeStyle = data.color; // Set color based on data received
             if (data.isDown) {
                 // Begin a new path when the drawing starts
@@ -113,7 +112,6 @@ const canvas = document.getElementById('whiteboard');
                 // End the path when the drawing stops
                 ctx.closePath();
             }
-            ctx.strokeStyle = currentColor;
         });
 
         
