@@ -57,7 +57,7 @@
         });
 
         socket.on("game_start", () => {
-            window.location.href = `whiteboard.html`; // Redirect to the whiteboard
+            window.location.href = `whiteboard.html?gameID=${currentGameID}`; // Redirect to the whiteboard
         });
         function readyUp() {
             const playerID = localStorage.getItem("playerID"); // Retrieve player ID from local storage

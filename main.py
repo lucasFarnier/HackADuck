@@ -122,11 +122,39 @@ def get_players(gameID):
     players = db.select(playersQuery, (gameID,))
     return [player[0] for player in players]
 
-# @socketio.on("ready")
-# def handleReady(data):
-#     gameID = data['gameID']
-#     if gameID in ready_players:
-#         ready_players[gameID].append(request.sid)
-    
+
+@socketio.on("ready")
+def handleReady(data):
+    gameID = data['gameID']
+    if gameID in ready_players:
+        ready_players[gameID].append(request.sid)
+
+# Handle theme votes
+THEMES = ["random", "halloween", "christmas", "easter"]
+gameVotes = {}
+@socketio.on('vote')
+def handle_vote(data):
+    game_id = data["gameID"]
+    player_id = data["playerID"]
+    theme = data["theme"]
+
+    if game_id not in gameVotes:
+        socketio.emit("error", {"message": "Voting not started."})
+        return
+
+    gameVotes[game_id]["votes"][player_id] = theme
+    total_votes = len(gameVotes[game_id]["votes"])
+
+    # Check if all players have voted
+    if total_votes >= gameVotes[game_id]["total_players"]:
+        # Calculate winning theme (here, a simple count of votes)
+        theme_counts = {}
+        for vote in gameVotes[game_id]["votes"].values():
+            theme_counts[vote] = theme_counts.get(vote, 0) + 1
+        winning_theme = max(theme_counts, key=theme_counts.get)
+        socketio.emit("vote_result", {"theme": winning_theme}, room=game_id)
+        print("votes", winning_theme)
+        del gameVotes[game_id]  # Reset votes
+    emit("vote_update", {"votes": total_votes}, room=game_id)
 if __name__ == "__main__":
     socketio.run(app,port=PORT)

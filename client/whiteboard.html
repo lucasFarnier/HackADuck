@@ -6,7 +6,8 @@
     <!-- <script src="game.js"></script> -->
 </head>
 <body>
-    <h2 id="timer">Prompt holder:</h2>
+
+    <h2>Prompt holder:</h2>
     <div id="popup" class="popup">
         <div class="popup-content">
             <!-- <span class="close">&times;</span> -->
@@ -33,17 +34,16 @@
         
     </div>
    
-    
-    <script src="script.js"></script>
     <script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
+    <script src="script.js"></script>
     
     <script src='drawersocket.js'></script>
     <script>
+        const currentGameID = new URLSearchParams(window.location.search).get('gameID');
         document.getElementById("popup").style.display = "flex"; // Show the popup
-
-
-        function closePopup(option) {
-            
+        function closePopup(theme) {
+            console.log("button logged" + theme)
+            socket.emit("vote", { gameID: currentGameID, playerID: localStorage.getItem("playerID"), theme: theme });
             document.getElementById("popup").style.display = "none"; // Hide the popup
         };
 
@@ -54,6 +54,18 @@
             }
         };
 
+        socket.on("vote_result", (data) => {
+            // document.getElementById("status").textContent = `Voting ended! Chosen theme: ${data.theme}`;
+            console.log(data.theme)
+            // document.getElementById("themes").innerHTML = "";  // Clear voting buttons
+        });
+
+        socket.on("vote_update", (data) => {
+            // document.getElementById("status").textContent = `Voting ended! Chosen theme: ${data.theme}`;
+            console.log("Updating vote:")
+            console.log(data.theme)
+            // document.getElementById("themes").innerHTML = "";  // Clear voting buttons
+        });
     </script>
 </body>
 </html>
