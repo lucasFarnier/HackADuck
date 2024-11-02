@@ -1,8 +1,11 @@
+import random
 from flask import Flask, request
 from flask_cors import CORS
 from flask_socketio import SocketIO, emit, join_room
 from datetime import datetime
 from db import DB
+from llm import llm
+import json
 
 PORT = 60000
 app = Flask(__name__)
@@ -81,13 +84,42 @@ def joinGame():
 
     # Insert the new player into the Player table
     playerQuery = "INSERT INTO Player (player_name, role, game_id) VALUES (?, ?, ?)"
-    role = "drawer"  # Assign a default role; modify as needed based on your logic
-    playerID = db.insertAndFetch(playerQuery, (username, role, gameID))
+
+    if currentPlayerCount[0][0] + 1 == 3:
+        assignRandomGuesser(gameID)
+
+    playerID = db.insertAndFetch(playerQuery, (username, "drawer", gameID))
 
     if playerID is None:
         return {"error": "Failed to create player"}, 500  # Handle player insertion failure
     socketio.emit('player_update', {'username': username, 'gameID': gameID}, room=gameID)
     return {"gameID": gameID, "playerID": playerID, "username": username}, 200
+
+def assignRandomGuesser(gameID):
+    playersQuery = "SELECT player_id FROM Player WHERE game_id = ?"
+    players = db.select(playersQuery, (gameID,))
+    guesser_id = random.choice(players)[0]
+    updateRoleQuery = "UPDATE Player SET role = 'guesser' WHERE player_id = ?"
+    db.update(updateRoleQuery, (guesser_id,))
+
+def get_roles(gameID):
+    rolesQuery = "SELECT player_name, role FROM Player WHERE game_id = ?"
+    roles = db.select(rolesQuery, (gameID,))
+    return [{"player_name": player[0], "role": player[1]} for player in roles]
+
+def emit_roles(gameID):
+    rolesQuery = "SELECT player_id, role FROM Player WHERE game_id = ?"
+    roles = db.select(rolesQuery, (gameID,))
+
+    for player_id, role in roles:
+        socketio.emit('role_assigned', {'role': role}, room=f'player_{player_id}')  # Use a unique room for each player
+
+@socketio.on('join')
+def handle_join(data):
+    gameID = data['gameID']
+    playerID = data['playerID']
+    join_room(gameID)  # Join the game room
+    join_room(f'player_{playerID}') 
 
 @app.route("/readyup", methods=["POST"])
 def readyUp():
@@ -97,18 +129,28 @@ def readyUp():
     if not playerID or not gameID:
         return {"error": "playerID and gameID are required"}, 400
 
+    # Update the ready status of the player
     readyQuery = "UPDATE Player SET is_ready = ? WHERE player_id = ? and game_id = ?"
     if db.update(readyQuery, (True, playerID, gameID)) == 0:
         return {"error": "Failed to update ready status or player not found"}, 404
-    
+
+    # Check if all players are ready
     checkReadyQuery = "SELECT COUNT(*) FROM PLAYER WHERE game_id = ? and is_ready = FALSE"
     unreadyCount = db.select(checkReadyQuery, (gameID,))
     
     if unreadyCount and unreadyCount[0][0] == 0:
-        print("Start game!")
-        socketio.emit('game_start', room=gameID)  # Emit to all players in this game
-        return {"message": "All players are ready. Game started!"}, 200
+        # Retrieve the guesser for the game
+        guesserQuery = "SELECT player_id FROM Player WHERE game_id = ? AND role = 'guesser'"
+        guesser = db.select(guesserQuery, (gameID,))
+        guesser_id = guesser[0][0] if guesser else None
+
+        # Start the game and notify players
+        socketio.emit('game_start', {'guesser_id': guesser_id}, room=gameID)
+        assign_prompts(gameID)
+        return {"message": "All players are ready. Game started!", "guesser_id": guesser_id}, 200
+
     return {"message": "Player is ready. Waiting for others."}, 200
+
 
 
 @socketio.on('join')
@@ -156,5 +198,56 @@ def handle_vote(data):
         print("votes", winning_theme)
         del gameVotes[game_id]  # Reset votes
     emit("vote_update", {"votes": total_votes}, room=game_id)
+
+@app.route("/assign_prompts", methods=["POST"])
+def assign_prompts():
+    data = request.json
+    gameID = data.get("gameID")
+    player_count = data.get("player_count")
+
+    if not gameID or not player_count:
+        return {"error": "gameID and player_count are required"}, 400
+
+    llm_instance = llm(count=player_count)
+    main_prompt, secondary_prompts = llm_instance.assign_prompts(player_count)
+
+    # Save prompts to the database or send to clients
+    prompts_query = "INSERT INTO Prompt (game_id, main_prompt, secondary_prompts) VALUES (?, ?, ?)"
+    db.insert(prompts_query, (gameID, main_prompt, json.dumps(secondary_prompts)))
+
+    # Notify players about their assigned prompts
+    socketio.emit('prompts_assigned', {'main_prompt': main_prompt, 'secondary_prompts': secondary_prompts}, room=gameID)
+
+    return {"main_prompt": main_prompt, "secondary_prompts": secondary_prompts}, 200
+
+
+@app.route("/check_guess", methods=["POST"])
+def check_guess():
+    data = request.json
+    player_id = data.get("player_id")  # Get the player ID from the request
+    guess = data.get("guess")
+    game_id = data.get("game_id")
+
+    if not player_id or not guess or not game_id:
+        return {"error": "player_id, guess, and game_id are required"}, 400
+
+    # Fetch the correct answer for the current game
+    correct_answer_query = "SELECT main_prompt FROM Prompt WHERE game_id = ?"
+    correct_answer_row = db.select(correct_answer_query, (game_id,))
+    
+    if not correct_answer_row:
+        return {"error": "No prompts found for this game"}, 404
+    
+    correct_answer = correct_answer_row[0]['main_prompt']
+
+    # Check if the guess is correct
+    is_correct = guess.lower() == correct_answer.lower()
+
+    # Save the guess to the database
+    insert_guess_query = "INSERT INTO Guesses (game_id, player_id, guess, is_correct) VALUES (?, ?, ?, ?)"
+    db.insert(insert_guess_query, (game_id, player_id, guess, is_correct))
+
+    return {"is_correct": is_correct}, 200
+
 if __name__ == "__main__":
     socketio.run(app,port=PORT)

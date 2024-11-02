@@ -39,12 +39,14 @@
     <script src="script.js"></script>
     <script>
         const socket = io('http://localhost:60000');
-
         // Assuming you have the gameID from the URL or local storage
         const currentGameID = new URLSearchParams(window.location.search).get('gameID');
         document.getElementById("getIDNum").innerText = "ID:\n" + currentGameID;
+        let redirectURL = `whiteboard.html?gameID=${currentGameID}`;
 
         socket.emit('join', { gameID: currentGameID });  // Notify server that user has joined
+
+
 
         socket.on('player_update', (data) => {
             const playerList = document.getElementById("playerList");
@@ -56,8 +58,15 @@
             });
         });
 
-        socket.on("game_start", () => {
-            window.location.href = `whiteboard.html?gameID=${currentGameID}`; // Redirect to the whiteboard
+        socket.on("game_start", (data) => {
+            const playerID = localStorage.getItem("playerID"); // Get current player's ID
+
+            // Check if the player is the guesser
+            if (data.guesser_id && data.guesser_id == playerID) {
+                window.location.href = `whiteboardguesser.html?gameID=${currentGameID}`;
+            } else {
+                window.location.href = `whiteboard.html?gameID=${currentGameID}`;
+            }
         });
         function readyUp() {
             const playerID = localStorage.getItem("playerID"); // Retrieve player ID from local storage
@@ -72,6 +81,7 @@
             .then(data => {
                 alert(data.message);
                 if (data.message === "All players are ready. Game started!") {
+                    if (playerID == data.player_id) guesser = true;
                     socket.emit('game_start'); // Emit event to start game
                 }
             })

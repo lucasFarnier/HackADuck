@@ -14,25 +14,55 @@
             <div id="drawing">
                 <canvas id="whiteboard" width="700" height="500"></canvas>
             </div>
-            <input type="text" id="guessInput" class="guessInput" style="margin-top: 5%; margin-bottom: 2%;" placeholder="enter guesses here"></input>
-            <button type="button" id="subbut" class="subbut">submit response</button>
+            <input type="text" id="guessInput" class="guessInput" style="margin-top: 5%; margin-bottom: 2%;" placeholder="Enter guesses here"></input>
+            <button type="button" id="subbut" class="subbut">Submit Response</button>
+            <div id="feedback" style="margin-top: 10px;"></div> <!-- Feedback message area -->
         </div>
         
     </div>
-   
-    
+
     <script src="script.js"></script>
     <script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
-    
     <script src='guessersocket.js'></script>
     <script>
+        // Placeholder values for player and game ID
+        const playerId = 1; // Replace this with the actual player ID
+        const gameId = 123; // Replace this with the actual game ID
+
+        document.getElementById("subbut").addEventListener("click", async () => {
+            const guess = document.getElementById("guessInput").value;
+
+            if (guess) {
+                const response = await fetch('/check_guess', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        player_id: playerId,
+                        guess: guess,
+                        game_id: gameId
+                    }),
+                });
+
+                const data = await response.json();
+                const feedback = document.getElementById("feedback");
+                
+                if (response.ok) {
+                    feedback.textContent = data.is_correct ? "Correct Guess!" : "Try Again!";
+                } else {
+                    feedback.textContent = data.error || "An error occurred.";
+                }
+            } else {
+                document.getElementById("feedback").textContent = "Please enter a guess.";
+            }
+        });
+
         document.getElementById("popup").style.display = "flex"; // Show the popup
 
-
         function closePopup(option) {
-            
             document.getElementById("popup").style.display = "none"; // Hide the popup
-        };
+        }
 
         // Close the popup if the user clicks anywhere outside of the popup content
         window.onclick = function(event) {
@@ -40,7 +70,6 @@
                 document.getElementById("popup").style.display = "none";
             }
         };
-
     </script>
 </body>
 </html>

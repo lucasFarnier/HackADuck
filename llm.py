@@ -37,14 +37,26 @@ class llm():
         self.get_theme()
         model = ollama.chat(
             model=self.model,
-            messages=[{"role":"user", "content":f"Give me main promp and {self.count} key scene elements to draw based on the following drawing prompt {self.theme}. Please respond only in JSON format without any additional text, explanation, or pleasantries. Output the following data: {self.format} Ensure the response is valid JSON and strictly follows the specified structure. Do not include any extra information outside of this JSON format."}],
-            stream = True
+            messages=[{"role": "user", "content": f"Give me main prompt and {self.count} key scene elements to draw based on the following drawing prompt {self.theme}. Please respond only in JSON format without any additional text, explanation, or pleasantries. Output the following data: {self.format} Ensure the response is valid JSON and strictly follows the specified structure. Do not include any extra information outside of this JSON format."}],
+            stream=True
         )
+        
         keywords = ""
         for chunk in model:
             keywords += chunk["message"]["content"]
         
-        print(keywords)
+        return keywords  # Return the keywords instead of printing
+        
+    def assign_prompts(self, player_count):
+        keywords = self.get_keywords()
+        # Assuming the response is valid JSON
+        prompts_data = json.loads(keywords)
+
+        # Create a list of secondary prompts for drawers
+        main_prompt = prompts_data.get("main", "")
+        secondary_prompts = {f"{i+1}": prompts_data.get(str(i+1), "") for i in range(player_count)}
+
+        return main_prompt, secondary_prompts
 
 
         
