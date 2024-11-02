@@ -4,8 +4,24 @@ const canvas = document.getElementById('whiteboard');
         let drawingAllowed = true; // Variable to track if drawing is allowed
         const socket = io('http://127.0.0.1:60000');
 
+
+        let button1 = document.getElementById("colour1");
+        let button2 = document.getElementById("colour2");
+        let colour1 = `#${Math.floor(Math.random()*16777215).toString(16)}`
+        let colour2 = `#${Math.floor(Math.random()*16777215).toString(16)}`
+        button1.style.backgroundColor = colour1;
+        button2.style.backgroundColor = colour2;
+
+        button1.addEventListener("click", function() {
+            ctx.strokeStyle = colour1;
+        });
+        button2.addEventListener("click", function() {
+            ctx.strokeStyle = colour2;
+        });
+
+
         // Set up line properties
-        ctx.strokeStyle = "#000000";
+        ctx.strokeStyle = colour1;
         ctx.lineWidth = 2;
         ctx.lineCap = "round";
 
@@ -36,14 +52,17 @@ const canvas = document.getElementById('whiteboard');
 
         // Update the timer every second
         const timerInterval = setInterval(updateTimer, 1000);
+        
+        let lastX, lastY; // Store last position
 
         // Start drawing
+       // Start drawing
         canvas.addEventListener("mousedown", (e) => {
             if (!drawingAllowed) return; // Prevent drawing if not allowed
             drawing = true;
-            ctx.beginPath();
-            ctx.moveTo(e.offsetX, e.offsetY);
-            socket.emit('draw', { x: e.offsetX, y: e.offsetY, isDown: true });
+            lastX = e.offsetX;
+            lastY = e.offsetY;
+            socket.emit('draw', { x: e.offsetX, y: e.offsetY, isDown: true, color: ctx.strokeStyle });
         });
 
         // Draw lines
@@ -51,13 +70,17 @@ const canvas = document.getElementById('whiteboard');
             if (!drawing || !drawingAllowed) return; // Prevent drawing if not allowed
             ctx.lineTo(e.offsetX, e.offsetY);
             ctx.stroke();
-            socket.emit('draw', { x: e.offsetX, y: e.offsetY, isDown: true });
+            socket.emit('draw', { x: e.offsetX, y: e.offsetY, isDown: false, color: ctx.strokeStyle });
+
+            // Update last position
+            lastX = e.offsetX;
+            lastY = e.offsetY;
         });
 
         // Stop drawing
         canvas.addEventListener("mouseup", () => {
             drawing = false;
-            ctx.closePath();
+            socket.emit('draw', { x: lastX, y: lastY, isDown: false, color: ctx.strokeStyle, endLine: true });
         });
 
         // Stop drawing if cursor leaves canvas
@@ -67,6 +90,24 @@ const canvas = document.getElementById('whiteboard');
 
         // Listen for drawing events from other users
         socket.on('draw', (data) => {
-            ctx.lineTo(data.x, data.y);
-            ctx.stroke();
+            ctx.strokeStyle = data.color; // Set color based on data received
+            if (data.isDown) {
+                // Begin a new path when the drawing starts
+                ctx.beginPath();
+                ctx.moveTo(data.x, data.y);
+            } else {
+                // Continue the path
+                ctx.lineTo(data.x, data.y);
+                ctx.stroke();
+            }
+            if (data.endLine) {
+                // End the path when the drawing stops
+                ctx.closePath();
+            }
+        });
+
+        
+        // Listen for color changes from other users
+        socket.on('changeColor', (color) => {
+        ctx.strokeStyle = color; // Set color based on the received color
         });
