@@ -16,11 +16,15 @@ const canvas = document.getElementById('whiteboard');
             ctx.strokeStyle = colour1;
             button1.style.borderColor = "white";
             button2.style.borderColor = "black";
+            button1.style.width = "74%"
+            button2.style.width = "24%"
         });
         button2.addEventListener("click", function() {
             ctx.strokeStyle = colour2;
             button2.style.borderColor = "white";
             button1.style.borderColor = "black";
+            button2.style.width = "74%"
+            button1.style.width = "24%"
         });
 
 
