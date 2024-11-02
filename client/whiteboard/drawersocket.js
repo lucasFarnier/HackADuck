@@ -59,7 +59,7 @@ const canvas = document.getElementById('whiteboard');
             drawing = true;
             ctx.beginPath();
             ctx.moveTo(e.offsetX, e.offsetY);
-            socket.emit('draw', { x: e.offsetX, y: e.offsetY, isDown: true });
+            socket.emit('draw', { x: e.offsetX, y: e.offsetY, isDown: true, color: ctx.strokeStyle });
         });
 
         // Draw lines
@@ -67,7 +67,7 @@ const canvas = document.getElementById('whiteboard');
             if (!drawing || !drawingAllowed) return; // Prevent drawing if not allowed
             ctx.lineTo(e.offsetX, e.offsetY);
             ctx.stroke();
-            socket.emit('draw', { x: e.offsetX, y: e.offsetY, isDown: true });
+            socket.emit('draw', { x: e.offsetX, y: e.offsetY, isDown: true, color: ctx.strokeStyle });
         });
 
         // Stop drawing
@@ -83,6 +83,12 @@ const canvas = document.getElementById('whiteboard');
 
         // Listen for drawing events from other users
         socket.on('draw', (data) => {
+            ctx.strokeStyle = data.color; // Set color based on data received
             ctx.lineTo(data.x, data.y);
             ctx.stroke();
+        });
+        
+        // Listen for color changes from other users
+        socket.on('changeColor', (color) => {
+        ctx.strokeStyle = color; // Set color based on the received color
         });

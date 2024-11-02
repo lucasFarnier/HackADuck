@@ -40,6 +40,12 @@ const canvas = document.getElementById('whiteboard');
 
         // Listen for drawing events from other users
         socket.on('draw', (data) => {
+            ctx.strokeStyle = data.color; // Set color based on data received
             ctx.lineTo(data.x, data.y);
             ctx.stroke();
+        });
+        
+        // Listen for color changes from other users
+        socket.on('changeColor', (color) => {
+        ctx.strokeStyle = color; // Set color based on the received color
         });
