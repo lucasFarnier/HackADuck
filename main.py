@@ -1,10 +1,12 @@
 from flask import Flask, request
+from flask_cors import CORS
 from flask_socketio import SocketIO, emit
 from datetime import datetime
 from db import DB
 
 PORT = 60000
 app = Flask(__name__)
+CORS(app)
 db = DB("game_database.db")
 
 # Handles drawing =======================================
@@ -107,7 +109,23 @@ def readyUp():
         return {"message": "All players are ready. Game started!"}, 200
     return {"message": "Player is ready. Waiting for others."}, 200
 
-
+@app.route("/getPlayers", methods=["GET"])
+def getPlayers():
+    game_id = request.args.get("gameID")
+    
+    if not game_id:
+        return {"error": "Game ID is required"}, 400
+    
+    # Check if the game exists by looking for players
+    playersQuery = "SELECT player_name FROM Player WHERE game_id = ?"
+    players = db.select(playersQuery, (game_id,))
+    
+    # If no players are found, return a 404 error indicating the game wasn't found
+    if players is None or len(players) == 0:
+        return {"error": "Game not found"}, 404
+    
+    # Return the list of player names if players are found
+    return {"players": [player[0] for player in players]}, 200
 
 
 if __name__ == "__main__":
