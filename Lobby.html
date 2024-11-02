@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>GAME</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1 class="title">Lobby</h1>
+    <div class="lobby">
+        <div class="lobby_lbl">
+            <h2>Players:</h2>
+        </div>
+        <div>
+            <label class="player_lst">Player 1</label><br>
+            <label class="player_lst">Player 2</label><br>
+            <label class="player_lst">Player 3</label><br>
+            <label class="player_lst">Player 4</label><br>
+            <label class="player_lst">Player 5</label><br>
+        </div>
+        
+        <button id="openPopup" class="HTP">How to Play</button>
+        <div id="popup" class="popup">
+            <div class="popup-content">
+                <span class="close">&times;</span>
+                <h2>How to play</h2>
+                <h3>
+                    This game consists of 5 players, 4 drawers and 1 guesser.<br>
+                    The drawers are given a prompt in which they vote for their chosen theme.<br>
+                    They will then be given a scenario where they will need to draw, this is done collaboratively.<br>
+                    Each drawer will also have a side objective where they will need to draw a specific object/entity in said scenario.<br>
+                    It is the guessers objective to guess the scenario whilst also guessing the side objectives.<br>
+                    The guesser will lose time for wrong guesses and gain extra time for correct guesses until the timer runs out or they guess everything correctly.
+                </h3>
+            </div>
+        </div>
+    </div>
+   
+    
+    <script src="script.js"></script>
+
+</body>
+</html>
