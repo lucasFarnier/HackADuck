@@ -14,9 +14,13 @@ const canvas = document.getElementById('whiteboard');
 
         button1.addEventListener("click", function() {
             ctx.strokeStyle = colour1;
+            button1.style.borderColor = "white";
+            button2.style.borderColor = "black";
         });
         button2.addEventListener("click", function() {
             ctx.strokeStyle = colour2;
+            button2.style.borderColor = "white";
+            button1.style.borderColor = "black";
         });
 
 
