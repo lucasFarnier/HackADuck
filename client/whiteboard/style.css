@@ -6,6 +6,7 @@ html, body {
     height: 100%;
     margin: 0;
     padding: 0;
+    background-color: #3e6795;
 }
 
 .whiteboard {
@@ -20,6 +21,8 @@ html, body {
 
     width: 400px;
     height: 400px;
+
+    color: white;
 }
 
 
@@ -31,4 +34,60 @@ html, body {
 }
 .drawerLabel{
     margin: 10px;
+    padding: 1%;
+    border-radius: 15px;
+
+    width: 15%;
+    height: 50px;
+
+    text-align: center;
+
+    background-color: white;
+    border:black 3px solid;
 }
+.guessInput{
+    width: 50%;
+    height: 50px;
+    border-radius: 15px;
+
+    font-size: xx-large;
+    text-align: center;
+    
+}
+.subbut{
+    width: 25%;
+    height: 50px;
+    border-radius: 15px;
+
+    font-size: x-large;
+    font-weight: bold;
+    text-align: center;
+
+    margin-left: 37.5%;
+    margin-bottom: 15px;
+    padding: 1%;
+    padding-bottom: 3%;
+
+    background-color: rgb(159, 214, 178);
+    border:black 3px solid;
+}
+.subbut:hover{
+    border: rgb(0, 255, 76) 3px solid;
+}
+
+.colorBut{
+    width: 49%;
+    height: 50px;
+    border-radius: 15px;
+    
+    font-size: x-large;
+    font-weight: bold;
+
+    margin-top: 1%;
+
+    border:black 3px solid;
+}
+.colorBut:hover{
+    border: rgb(83, 83, 255) 5px solid;
+}
+

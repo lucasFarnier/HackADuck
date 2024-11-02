@@ -184,5 +184,40 @@ label {
     margin-left: auto;
     margin-right: auto;
     display: block;
+}
 
+/* Canvas styling */
+#whiteboard {
+    width: 100%;
+    height: 100%;
+    background-color: white;
+}
+
+/* Button styling */
+.colorBut {
+    margin-top: 10px;
+}
+
+
+/* Canvas should fill the container */
+.whiteboard {
+    height: 500px;
+    width: 700px;
+    border: black solid 5px;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: white;
+}
+
+
+/* Media query for smaller screens */
+@media (max-width: 768px) {
+    .lobby_lbl {
+        width: 90vw;  /* Adjust width to fit smaller screens */
+        height: auto;  /* Allow height to adapt */
+    }
+    #whiteboard {
+        height: auto;
+        width: 100%;
+    }
 }

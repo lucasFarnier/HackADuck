@@ -3,25 +3,21 @@
 <head>
     <title>GAME</title>
     <link rel="stylesheet" href="styles.css">
-    <script src="game.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.0/socket.io.js"></script>
 </head>
 <body>
 
     <h2>Lobby</h2>
     <div class="menu">
     <!-- Background music -->
-    <audio id="backgroundMusic" src="media/bg_music.mp3" autoplay loop></audio>
+    <audio id="LobbydMusic" src="media/lobby.mp3" autoplay loop></audio>
         <div class="lobby_lbl">
             <h2>Players:</h2>
         </div>
-        <div class="player_lst">
-            <label>Player 1</label><br>
-            <label>Player 2</label><br>
-            <label>Player 3</label><br>
-            <label>Player 4</label><br>
-            <label>Player 5</label><br>
+        <div id="gameStatus">Waiting for players...</div> <!-- Status text -->
+        <div class="player_lst" id="playerList">
         </div>
-        
+        <button id="readyButton" onclick="readyUp()">Ready Up</button> <!-- Ready button -->
         <button id="openPopup" class="HTP">How to Play</button>
         <div id="popup" class="popup">
             <div class="popup-content">
@@ -40,6 +36,49 @@
    
     
     <script src="script.js"></script>
+    <script>
+        const socket = io('http://localhost:60000');
 
+        // Assuming you have the gameID from the URL or local storage
+        const currentGameID = new URLSearchParams(window.location.search).get('gameID');
+
+        socket.emit('join', { gameID: currentGameID });  // Notify server that user has joined
+
+        socket.on('player_update', (data) => {
+            const playerList = document.getElementById("playerList");
+            playerList.innerHTML = ""; // Clear current player list
+            data.players.forEach(player => {
+                const playerItem = document.createElement("div");
+                playerItem.textContent = player;
+                playerList.appendChild(playerItem);
+            });
+        });
+
+        socket.on("game_start", () => {
+            window.location.href = `whiteboard.html`; // Redirect to the whiteboard
+        });
+        function readyUp() {
+            const playerID = localStorage.getItem("playerID"); // Retrieve player ID from local storage
+            fetch("http://localhost:60000/readyup", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ playerID: playerID, gameID: currentGameID })
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.message);
+                if (data.message === "All players are ready. Game started!") {
+                    socket.emit('game_start'); // Emit event to start game
+                }
+            })
+            .catch(error => {
+                console.error("Error readying up:", error);
+            });
+
+            document.getElementById("readyButton").style.display = "none"; 
+        }
+    </script>
 </body>
 </html>

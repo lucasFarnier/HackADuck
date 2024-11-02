@@ -1,10 +1,12 @@
 from flask import Flask, request
-from flask_socketio import SocketIO, emit
+from flask_cors import CORS
+from flask_socketio import SocketIO, emit, join_room
 from datetime import datetime
 from db import DB
 
 PORT = 60000
 app = Flask(__name__)
+CORS(app)
 db = DB("game_database.db")
 
 # Handles drawing =======================================
@@ -84,7 +86,7 @@ def joinGame():
 
     if playerID is None:
         return {"error": "Failed to create player"}, 500  # Handle player insertion failure
-
+    socketio.emit('player_update', {'username': username, 'gameID': gameID}, room=gameID)
     return {"gameID": gameID, "playerID": playerID, "username": username}, 200
 
 @app.route("/readyup", methods=["POST"])
@@ -104,11 +106,27 @@ def readyUp():
     
     if unreadyCount and unreadyCount[0][0] == 0:
         print("Start game!")
+        socketio.emit('game_start', room=gameID)  # Emit to all players in this game
         return {"message": "All players are ready. Game started!"}, 200
     return {"message": "Player is ready. Waiting for others."}, 200
 
 
+@socketio.on('join')
+def handle_join(data):
+    gameID = data['gameID']
+    join_room(gameID)  # Join the room corresponding to the gameID
+    emit('player_update', {'players': get_players(gameID)}, room=gameID)  # Send current players
 
+def get_players(gameID):
+    playersQuery = "SELECT player_name FROM Player WHERE game_id = ?"
+    players = db.select(playersQuery, (gameID,))
+    return [player[0] for player in players]
 
+# @socketio.on("ready")
+# def handleReady(data):
+#     gameID = data['gameID']
+#     if gameID in ready_players:
+#         ready_players[gameID].append(request.sid)
+    
 if __name__ == "__main__":
     socketio.run(app,port=PORT)

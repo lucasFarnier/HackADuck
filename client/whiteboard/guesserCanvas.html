@@ -10,9 +10,14 @@
 <body>
     <div class="label-container">
         <label class="drawerLabel" id="timer">im a timer</label>
+        <input type="text" id="guesses" name="guesses" class="guessInput" placeholder="enter guesses here">
+        <label class="drawerLabel" id="sidePrompts">0 / 4</label>
+    </div>
+    <div>
+        <button type="button" id="submitbutton"class="subbut">submit guess</button>
     </div>
 
-    <div id="drawing" style="height: 500px; width: 700px; border: red solid 1px; margin-left: auto; margin-right: auto;">
+    <div id="drawing" style="height: 500px; width: 700px; border: black solid 5px; margin-left: auto; margin-right: auto; background-color: white;">
         <canvas id="whiteboard" width="700" height="500"></canvas>
     </div>
     
