@@ -4,7 +4,7 @@ body {
     background-color: #3e6795;
 }
 
-.menu {
+.menu{
     width: 50%;
     margin-left: auto;
     margin-right: auto;
@@ -61,7 +61,7 @@ button {
     font-size: 45px;
     box-shadow: #000000 0px 0px 5px;
 }
-button:hover {
+button:hover:not(.voteOpp) {
     background-color: #fdff8b;
     width: 50%;
     border-radius: 25px;
@@ -195,13 +195,21 @@ label {
 }
 
 
+.whiteboardmenu{
+    margin-left: auto;
+    margin-right: auto;
+    background-color: #294d76;
+    border: #000000 solid 2px;
+    border-radius: 25px;
+    padding: 1%;
+    box-shadow: #000000 0px 0px 5px;
+    width: 700px;
+}
 /* Canvas should fill the container */
 .whiteboard {
     height: 500px;
     width: 700px;
     border: black solid 5px;
-    margin-left: auto;
-    margin-right: auto;
     background-color: white;
 }
 
@@ -216,4 +224,24 @@ label {
         height: auto;
         width: 100%;
     }
+}
+
+.popup-content{
+    background-color: #294d76;
+    border-radius: 15px;
+    border: black 5px solid;
+    width: 600px;
+}
+.voteOpp{
+    display: inline;
+    margin: 2%;
+    margin-bottom: 5%;
+}
+.voteOpp:hover{
+    background-color: #fdff8b;
+    border-radius: 25px;
+    font-family: "Amatic SC", sans-serif;
+    font-weight: 600;
+    /* font-size: 20px; */
+    box-shadow: #6a6a6a 0px 0px 8px;
 }
