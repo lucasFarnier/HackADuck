@@ -63,29 +63,21 @@ const canvas = document.getElementById('whiteboard');
         
         let lastX, lastY; // Store last position
 
+        // Start drawing
        // Start drawing
         canvas.addEventListener("mousedown", (e) => {
             if (!drawingAllowed) return; // Prevent drawing if not allowed
             drawing = true;
             lastX = e.offsetX;
             lastY = e.offsetY;
-            // Send the starting point with color
             socket.emit('draw', { x: e.offsetX, y: e.offsetY, isDown: true, color: ctx.strokeStyle });
         });
 
         // Draw lines
         canvas.addEventListener("mousemove", (e) => {
             if (!drawing || !drawingAllowed) return; // Prevent drawing if not allowed
-            
-            // Draw locally with the current color
-            ctx.strokeStyle = ctx.strokeStyle;  // Use the current selected color
-            ctx.beginPath();
-            ctx.moveTo(lastX, lastY);
             ctx.lineTo(e.offsetX, e.offsetY);
             ctx.stroke();
-            ctx.closePath();
-            
-            // Send the line segment data along with the color
             socket.emit('draw', { x: e.offsetX, y: e.offsetY, isDown: false, color: ctx.strokeStyle });
 
             // Update last position
@@ -96,8 +88,12 @@ const canvas = document.getElementById('whiteboard');
         // Stop drawing
         canvas.addEventListener("mouseup", () => {
             drawing = false;
-            // Emit an event with the end point and color to finish the line
             socket.emit('draw', { x: lastX, y: lastY, isDown: false, color: ctx.strokeStyle, endLine: true });
+        });
+
+        // Stop drawing if cursor leaves canvas
+        canvas.addEventListener("mouseleave", () => {
+            drawing = false;
         });
 
         // Listen for drawing events from other users
@@ -106,21 +102,20 @@ const canvas = document.getElementById('whiteboard');
             let currentColor = ctx.strokeStyle;
             ctx.strokeStyle = data.color;
             if (data.isDown) {
-                // Begin a new path with the specified color
+                // Begin a new path when the drawing starts
                 ctx.beginPath();
                 ctx.moveTo(data.x, data.y);
             } else {
-                // Continue the path with the specified color
+                // Continue the path
                 ctx.lineTo(data.x, data.y);
                 ctx.stroke();
             }
             if (data.endLine) {
-                // Close the path when the drawing stops
+                // End the path when the drawing stops
                 ctx.closePath();
             }
             ctx.strokeStyle = currentColor;
         });
-
 
         
         // Listen for color changes from other users
