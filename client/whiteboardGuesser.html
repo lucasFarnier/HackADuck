@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>GAME</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- <script src="game.js"></script> -->
+</head>
+<body>
+    <h2 id="timer">Prompt holder:</h2>
+    <div class="whiteboardmenu">
+        <!-- Background music -->
+        <audio id="LobbydMusic" src="media/lobby.mp3" autoplay loop></audio>
+        <div class="lobby_lbl" style="width: 700px; height: 500px;">
+            <div id="drawing">
+                <canvas id="whiteboard" width="700" height="500"></canvas>
+            </div>
+            <input type="text" id="guessInput" class="guessInput" style="margin-top: 5%; margin-bottom: 2%;" placeholder="enter guesses here"></input>
+            <button type="button" id="subbut" class="subbut">submit response</button>
+        </div>
+        
+    </div>
+   
+    
+    <script src="script.js"></script>
+    <script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
+    
+    <script src='guessersocket.js'></script>
+    <script>
+        document.getElementById("popup").style.display = "flex"; // Show the popup
+
+
+        function closePopup(option) {
+            
+            document.getElementById("popup").style.display = "none"; // Hide the popup
+        };
+
+        // Close the popup if the user clicks anywhere outside of the popup content
+        window.onclick = function(event) {
+            if (event.target == document.getElementById("popup")) {
+                document.getElementById("popup").style.display = "none";
+            }
+        };
+
+    </script>
+</body>
+</html>
