@@ -4,7 +4,7 @@ body {
     background-color: #3e6795;
 }
 
-.menu {
+.menu{
     width: 50%;
     margin-left: auto;
     margin-right: auto;
@@ -195,13 +195,21 @@ label {
 }
 
 
+.whiteboardmenu{
+    margin-left: auto;
+    margin-right: auto;
+    background-color: #294d76;
+    border: #000000 solid 2px;
+    border-radius: 25px;
+    padding: 1%;
+    box-shadow: #000000 0px 0px 5px;
+    width: 700px;
+}
 /* Canvas should fill the container */
 .whiteboard {
     height: 500px;
     width: 700px;
     border: black solid 5px;
-    margin-left: auto;
-    margin-right: auto;
     background-color: white;
 }
 
