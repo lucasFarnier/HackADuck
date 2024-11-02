@@ -103,6 +103,7 @@ const canvas = document.getElementById('whiteboard');
         // Listen for drawing events from other users
         socket.on('draw', (data) => {
             // Set the color for each line segment individually
+            let currentColor = ctx.strokeStyle;
             ctx.strokeStyle = data.color;
             if (data.isDown) {
                 // Begin a new path with the specified color
@@ -117,6 +118,7 @@ const canvas = document.getElementById('whiteboard');
                 // Close the path when the drawing stops
                 ctx.closePath();
             }
+            ctx.strokeStyle = currentColor;
         });
 
 
