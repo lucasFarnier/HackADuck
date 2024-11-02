@@ -18,7 +18,7 @@ def handle_draw(data):
 
 @socketio.on('stopDrawing')
 def handle_stop_drawing():
-    socketio.emit('stopDrawing')
+    emit('stopDrawing')
 
 if __name__ == '__main__':
     socketio.run(app, debug=True, port=60000)
