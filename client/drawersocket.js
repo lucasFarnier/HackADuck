@@ -89,6 +89,7 @@ const canvas = document.getElementById('whiteboard');
         canvas.addEventListener("mouseup", () => {
             drawing = false;
             socket.emit('draw', { x: lastX, y: lastY, isDown: false, color: ctx.strokeStyle, endLine: true });
+            ctx.exit();
         });
 
         // Stop drawing if cursor leaves canvas
@@ -97,7 +98,7 @@ const canvas = document.getElementById('whiteboard');
         });
 
         // Listen for drawing events from other users
-        socket.on('draw', (data) => {
+        socket.on('drawing', (data) => {
             ctx.strokeStyle = data.color; // Set color based on data received
             if (data.isDown) {
                 // Begin a new path when the drawing starts
