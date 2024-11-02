@@ -80,7 +80,6 @@ const canvas = document.getElementById('whiteboard');
         // Stop drawing
         canvas.addEventListener("mouseup", () => {
             drawing = false;
-            socket.emit('draw', { x: lastX, y: lastY, isDown: false, color: ctx.strokeStyle, endLine: true });
             ctx.closePath();
         });
 
