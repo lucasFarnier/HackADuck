@@ -1,4 +1,21 @@
 @import url('https://fonts.googleapis.com/css2?family=Amatic+SC:wght@400;700&display=swap');
+
+body {
+    background-color: #3e6795;
+}
+
+
+
+.menu {
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: #294d76;
+    border: #000000 solid 2px;
+    border-radius: 25px;
+    padding: 10px;
+    box-shadow: #000000 0px 0px 5px;
+}
 a {
     text-decoration: none; /* Removes the underline */
     color: blue;          /* Optional: set link color */
@@ -22,50 +39,47 @@ a:hover {
 
 input[type=text] {
     width: 50%;
-    padding: 12px 20px;
-    margin: 8px 0;
-    box-sizing: border-box;
+    border-radius: 5px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 15px;
+    display: block;
     font-family: "Amatic SC", sans-serif;
     font-weight: 600;
-    font-size: xx-large;
-    text-align: center;
+    font-size: 45px;
+    box-shadow: #000000 0px 0px 5px;
 }
 
-#join{
-    size:20px;
-    background-color: red;
-    padding: 50px 100px;
-    display:block;
-    border: 2;
+button {
+    background-color: #FCFF4B;
+    width: 50%;
+    border-radius: 25px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 20px;
+    display: block;
     font-family: "Amatic SC", sans-serif;
     font-weight: 600;
-    font-size:50px;
-    margin: auto;
-    margin-top: 150px;
-    text-decoration: none;
-    border-color: white;
-    border-radius: 25px;
+    font-size: 45px;
+    box-shadow: #000000 0px 0px 5px;
 }
-
-#join2{
-    size:20px;
-    background-color: red;
-    padding: 50px 100px;
-    display:block;
-    border: 2;
+button:hover {
+    background-color: #fdff8b;
+    width: 50%;
+    border-radius: 25px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 20px;
+    display: block;
     font-family: "Amatic SC", sans-serif;
     font-weight: 600;
-    font-size:50px;
-    margin: auto;
-    margin-top: 50px;
-    text-decoration: none;
-    border-color: white;
-    border-radius: 25px;
+    font-size: 45px;
+    box-shadow: #6a6a6a 0px 0px 8px;
 }
 
 .HTP{
     size:20px;
-    background-color: red;
+    background-color: #FCFF4B;
     padding: 25px;
     display:block;
     border: 2;
@@ -78,9 +92,8 @@ input[type=text] {
     
 }
 
-.title {
-    margin-top: auto;
-    margin-left: 40%;
+h1 {
+    text-align: center;
     font-family: "Amatic SC", sans-serif;
     font-weight: 700;
     font-size: 100px;
@@ -162,4 +175,9 @@ input[type=text] {
     cursor: pointer;
     font-size: 20px;
     float: right;
+}
+
+label {
+    font-weight: 1000;
+    font-family: "Amatic SC", sans-serif;
 }
