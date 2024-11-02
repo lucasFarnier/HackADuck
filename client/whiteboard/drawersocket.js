@@ -84,7 +84,9 @@ const canvas = document.getElementById('whiteboard');
         // Listen for drawing events from other users
         socket.on('draw', (data) => {
             ctx.strokeStyle = data.color; // Set color based on data received
-            ctx.lineTo(data.x, data.y);
+            ctx.beginPath(); // Start a new path
+            ctx.moveTo(data.x, data.y); // Move to the last position (or you might want to store last position)
+            ctx.lineTo(data.x, data.y); // Draw a line to the received point
             ctx.stroke();
         });
         
