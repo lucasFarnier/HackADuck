@@ -47,7 +47,15 @@ input[type=text] {
     font-size: 45px;
     box-shadow: #000000 0px 0px 5px;
 }
-
+.button{
+    padding-top: 10%;
+}
+#logo{
+    height: 30%;
+    width: 30%;
+    padding-left: 35%;
+    padding-top: 0%;
+}
 button {
     background-color: #FCFF4B;
     width: 50%;
@@ -92,7 +100,7 @@ h1 {
     text-align: center;
     font-family: "Amatic SC", sans-serif;
     font-weight: 700;
-    font-size: 100px;
+    font-size: 80px;
 }
 h2{
     text-align: center;
@@ -158,10 +166,14 @@ h2{
 }
 
 .popup-content {
-    background-color: white;
-    padding: 20px;
-    border-radius: 5px;
-    text-align: center;
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: #6baaf2;
+    border: #000000 solid 2px;
+    border-radius: 25px;
+    padding: 10px;
+    box-shadow: #000000 0px 0px 5px;
 }
 
 .close {
