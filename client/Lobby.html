@@ -3,7 +3,7 @@
 <head>
     <title>GAME</title>
     <link rel="stylesheet" href="styles.css">
-    <!-- <script src="game.js"></script> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.0/socket.io.js"></script>
 </head>
 <body>
 
@@ -14,9 +14,10 @@
         <div class="lobby_lbl">
             <h2>Players:</h2>
         </div>
+        <div id="gameStatus">Waiting for players...</div> <!-- Status text -->
         <div class="player_lst" id="playerList">
         </div>
-        
+        <button id="readyButton" onclick="readyUp()">Ready Up</button> <!-- Ready button -->
         <button id="openPopup" class="HTP">How to Play</button>
         <div id="popup" class="popup">
             <div class="popup-content">
@@ -36,40 +37,48 @@
     
     <script src="script.js"></script>
     <script>
-        async function loadPlayers() {
-            const urlParams = new URLSearchParams(window.location.search);
-    const gameID = urlParams.get("gameID");
+        const socket = io('http://localhost:60000');
 
-    try {
-        const response = await fetch(`http://localhost:60000/getPlayers?gameID=${gameID}`);
-        const data = await response.json();
+        // Assuming you have the gameID from the URL or local storage
+        const currentGameID = new URLSearchParams(window.location.search).get('gameID');
 
-        // Check if the game exists
-        if (response.status === 404 || data.error === "Game not found") {
-            // Redirect to join page if game doesn't exist
-            alert("Game not found. Redirecting to the join page.");
-            window.location.href = "join.html";
-            return;
-        }
-        console.log(response);
-        if (!response.ok) throw new Error("Failed to load players");
+        socket.emit('join', { gameID: currentGameID });  // Notify server that user has joined
 
-        const playerListDiv = document.getElementById("playerList");
-        playerListDiv.innerHTML = "";  // Clear existing content
-
-        // Populate player list
-        data.players.forEach((playerName, index) => {
-            const playerLabel = document.createElement("label");
-            playerLabel.textContent = `Player ${index + 1}: ${playerName}`;
-            playerListDiv.appendChild(playerLabel);
-            playerListDiv.appendChild(document.createElement("br"));
+        socket.on('player_update', (data) => {
+            const playerList = document.getElementById("playerList");
+            playerList.innerHTML = ""; // Clear current player list
+            data.players.forEach(player => {
+                const playerItem = document.createElement("div");
+                playerItem.textContent = player;
+                playerList.appendChild(playerItem);
+            });
         });
-        
-    } catch (error) {
-            console.error("Error loading players:", error.message);
-    }
+
+        socket.on("game_start", () => {
+            window.location.href = `whiteboard.html`; // Redirect to the whiteboard
+        });
+        function readyUp() {
+            const playerID = localStorage.getItem("playerID"); // Retrieve player ID from local storage
+            fetch("http://localhost:60000/readyup", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ playerID: playerID, gameID: currentGameID })
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.message);
+                if (data.message === "All players are ready. Game started!") {
+                    socket.emit('game_start'); // Emit event to start game
+                }
+            })
+            .catch(error => {
+                console.error("Error readying up:", error);
+            });
+
+            document.getElementById("readyButton").style.display = "none"; 
         }
-        loadPlayers();
     </script>
 </body>
 </html>
