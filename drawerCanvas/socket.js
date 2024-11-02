@@ -2,7 +2,7 @@ const canvas = document.getElementById('whiteboard');
         const ctx = canvas.getContext('2d');
         let drawing = false;
         let drawingAllowed = true; // Variable to track if drawing is allowed
-        const socket = io();
+        const socket = io('https://127.0.0.1:');
 
         // Set up line properties
         ctx.strokeStyle = "#000000";
@@ -43,7 +43,7 @@ const canvas = document.getElementById('whiteboard');
             drawing = true;
             ctx.beginPath();
             ctx.moveTo(e.offsetX, e.offsetY);
-            socket.emit('draw', { x: e.offsetX, y: e.offsetY, isDown: true });
+            //socket.emit('draw', { x: e.offsetX, y: e.offsetY, isDown: true });
         });
 
         // Draw lines
@@ -51,7 +51,7 @@ const canvas = document.getElementById('whiteboard');
             if (!drawing || !drawingAllowed) return; // Prevent drawing if not allowed
             ctx.lineTo(e.offsetX, e.offsetY);
             ctx.stroke();
-            socket.emit('draw', { x: e.offsetX, y: e.offsetY, isDown: true });
+            //socket.emit('draw', { x: e.offsetX, y: e.offsetY, isDown: true });
         });
 
         // Stop drawing
@@ -67,10 +67,6 @@ const canvas = document.getElementById('whiteboard');
 
         // Listen for drawing events from other users
         socket.on('draw', (data) => {
-            if (data.isDown) {
-                ctx.lineTo(data.x, data.y);
-                ctx.stroke();
-            } else {
-                ctx.closePath();
-            }
+            ctx.lineTo(data.x, data.y);
+            ctx.stroke();
         });
