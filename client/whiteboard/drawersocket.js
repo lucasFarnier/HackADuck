@@ -4,8 +4,24 @@ const canvas = document.getElementById('whiteboard');
         let drawingAllowed = true; // Variable to track if drawing is allowed
         const socket = io('http://127.0.0.1:60000');
 
+
+        let button1 = document.getElementById("colour1");
+        let button2 = document.getElementById("colour2");
+        let colour1 = `#${Math.floor(Math.random()*16777215).toString(16)}`
+        let colour2 = `#${Math.floor(Math.random()*16777215).toString(16)}`
+        button1.style.backgroundColor = colour1;
+        button2.style.backgroundColor = colour2;
+
+        button1.addEventListener("click", function() {
+            ctx.strokeStyle = colour1;
+        });
+        button2.addEventListener("click", function() {
+            ctx.strokeStyle = colour2;
+        });
+
+
         // Set up line properties
-        ctx.strokeStyle = "#000000";
+        ctx.strokeStyle = colour1;
         ctx.lineWidth = 2;
         ctx.lineCap = "round";
 
@@ -36,7 +52,7 @@ const canvas = document.getElementById('whiteboard');
 
         // Update the timer every second
         const timerInterval = setInterval(updateTimer, 1000);
-
+        
         // Start drawing
         canvas.addEventListener("mousedown", (e) => {
             if (!drawingAllowed) return; // Prevent drawing if not allowed
