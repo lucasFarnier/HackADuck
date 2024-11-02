@@ -1,7 +1,7 @@
 const canvas = document.getElementById('whiteboard');
         const ctx = canvas.getContext('2d');
         let drawing = false;
-        let drawingAllowed = true; // Variable to track if drawing is allowed
+        let drawingAllowed = false; // Variable to track if drawing is allowed
         const socket = io('http://127.0.0.1:60000');
 
         // Set up line properties
@@ -36,3 +36,10 @@ const canvas = document.getElementById('whiteboard');
 
         // Update the timer every second
         const timerInterval = setInterval(updateTimer, 1000);
+
+
+        // Listen for drawing events from other users
+        socket.on('draw', (data) => {
+            ctx.lineTo(data.x, data.y);
+            ctx.stroke();
+        });
