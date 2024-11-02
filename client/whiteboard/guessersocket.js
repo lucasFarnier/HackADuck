@@ -35,7 +35,7 @@ const canvas = document.getElementById('whiteboard');
         };
 
         // Update the timer every second
-        const timerInterval = setInterval(updateTimer, 1000);
+        // const timerInterval = setInterval(updateTimer, 1000);
 
         
          // Listen for drawing events from other users
